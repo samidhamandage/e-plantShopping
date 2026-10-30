@@ -5,38 +5,53 @@ import AboutUs from "./AboutUs";
 import "./App.css";
 
 function App() {
-  const [page, setPage] = useState("home");
+  const [showProductList, setShowProductList] = useState(false);
+  const [showCart, setShowCart] = useState(false);
+
+  const handleGetStartedClick = () => {
+    setShowProductList(true);
+    setShowCart(false);
+  };
+
+  const handleHomeClick = () => {
+    setShowProductList(false);
+    setShowCart(false);
+  };
+
+  const handleCartClick = () => {
+    setShowCart(true);
+  };
+
+  const handleContinueShopping = () => {
+    setShowProductList(true);
+    setShowCart(false);
+  };
 
   return (
     <div className="app">
-      {page === "home" && (
+      {showCart ? (
+        <CartItem onContinueShopping={handleContinueShopping} />
+      ) : showProductList ? (
+        <ProductList
+          onCartClick={handleCartClick}
+          onHomeClick={handleHomeClick}
+        />
+      ) : (
         <div className="landing-page">
-          <h1>Paradise Nursery</h1>
-          <h2>Bring Nature Into Your Home</h2>
+          <div className="background-image">
+            <h1>Welcome to Paradise Nursery</h1>
+            <p>Discover beautiful plants and bring nature into your home.</p>
 
-          <p>
-            Discover beautiful plants and make your home
-            greener, healthier, and happier.
-          </p>
-
-          <button onClick={() => setPage("products")}>
-            Get Started
-          </button>
+            <button
+              className="get-started-button"
+              onClick={handleGetStartedClick}
+            >
+              Get Started
+            </button>
+          </div>
 
           <AboutUs />
         </div>
-      )}
-
-      {page === "products" && (
-        <ProductList
-          onCartClick={() => setPage("cart")}
-        />
-      )}
-
-      {page === "cart" && (
-        <CartItem
-          onContinueShopping={() => setPage("products")}
-        />
       )}
     </div>
   );
